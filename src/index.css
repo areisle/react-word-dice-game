@@ -1,14 +1,42 @@
-body {
-  margin: 0;
-  padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+:root {
+    --palette__primary--main: rgb(58, 73, 158);
+    --palette__primary--dark: rgb(37, 50, 126);
+    --palette__text: #000000;
+    --palette__text--contrast: #ffffff;
+    --palette__bg: darkslategray;
+    --palette__common-white: rgb(240, 233, 233);
+    --palette__border-white: rgb(218, 204, 204);
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+[data-theme="dark"] {
+    --palette__primary--main: rgb(58, 73, 158);
+    --palette__primary--dark: rgb(37, 50, 126);
+    --palette__text: #ffffff;
+    --palette__text--contrast: #ffffff;
+    --palette__bg: rgb(0, 0, 0);
+    --palette__common-white: #000000;
+    --palette__border-white: rgb(161, 150, 150);
+}
+
+html {
+    box-sizing: border-box;
+    width: 100vw;
+    height: 100vh;
+}
+
+body, html {
+    margin: 0px;
+    padding: 0px;
+    max-height: 100%;
+    max-width: 100%;
+}
+
+body, .App, #root {
+    width: 100%;
+    height: 100%;
+}
+
+*, *:after, *:before {
+    box-sizing: inherit;
+    font-family: 'Yantramanav'
 }
