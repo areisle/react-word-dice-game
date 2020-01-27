@@ -7,6 +7,8 @@ import * as io from 'socket.io-client';
 import { useTimer } from './Timer';
 import { configurations } from './config';
 
+const API = process.env.REACT_APP_API;
+
 function getRandIndex(length: number) {
     return Math.floor(Math.random() * Math.floor(length))
 }
@@ -87,7 +89,7 @@ export function SocketProvider({ children }) {
     } = useTimer(180);
 
     useEffect(() => {
-        const nextSocket = io.connect('http://localhost:8080');
+        const nextSocket = io.connect(API);
         setSocket(nextSocket);
 
         const handleGameStarted = (nextBoard) => {
