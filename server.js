@@ -29,6 +29,6 @@ io.on('connection', (socket) => {
     });
 });
 
-http.listen(8080, () => {
-    console.log('listening on *:8080');
-});
+const port = process.env.PORT || 5000;
+
+http.listen(port);
