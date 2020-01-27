@@ -1,6 +1,6 @@
 import './Controls.scss';
 
-import React, { useState, useCallback, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 
 import { Timer } from './Timer';
 import { SocketContext } from './Socket';
@@ -25,10 +25,6 @@ function Controls() {
         startGame();
     }
 
-    const endGame = useCallback(() => {
-        alert('GAME OVER');
-    }, []);
-
     const handleJoinRoom = () => {
         joinRoom(roomToJoin);
         setRoomToJoin('');
@@ -38,7 +34,6 @@ function Controls() {
         <div className='controls'>
             <div>
                 <Timer 
-                    onTimeout={endGame} 
                     time={time} 
                 />
                 <button

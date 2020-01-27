@@ -43,7 +43,7 @@ function SocketProvider({ children }) {
     const {
         time,
         restart,
-    } = useTimer(180);
+    } = useTimer(10);
 
     useEffect(() => {
         const nextSocket = io.connect(API);

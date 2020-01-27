@@ -4,7 +4,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 
 function Timer(props: any) {
     const { time, onTimeout } = props;
-    const minute = Math.floor(time /60);
+    const minute = Math.floor(time / 60);
     const sec = time % 60;
     const tenSec = (sec - sec % 10) / 10;
     const smallSec = sec - tenSec * 10;
