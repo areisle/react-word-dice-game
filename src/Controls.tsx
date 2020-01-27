@@ -13,11 +13,12 @@ function Controls() {
     }
 
     const {
-        joinRoom,
         createRoom,
+        joinRoom,
+        leaveRoom,
+        roomCode: currentRoomCode,
         startGame,
         time,
-        roomCode: currentRoomCode,
     } = useContext(SocketContext);
 
     const shake = () => {
@@ -28,7 +29,7 @@ function Controls() {
         alert('GAME OVER');
     }, []);
 
-    const handleJoinGroup = () => {
+    const handleJoinRoom = () => {
         joinRoom(roomToJoin);
         setRoomToJoin('');
     };
@@ -46,36 +47,45 @@ function Controls() {
                     shuffle
                 </button>
             </div>
-            <div>
-                {
-                    currentRoomCode && (
-                        <p>
-                            Room Code: {currentRoomCode}
-                        </p>
-                    )
-                }
-                <button
-                    onClick={createRoom}
-                >
-                    create group
-                </button>
-            </div>
-            <div>
-                <label htmlFor="room-code-input">
-                    enter room code:
-                </label>
-                <input
-                    id='room-code-input'
-                    type="text"
-                    value={roomToJoin}
-                    onChange={handleChange}
-                />
-                <button
-                    onClick={handleJoinGroup}
-                >
-                    join group
-                </button>
-            </div>
+            {currentRoomCode && (
+                <div>
+                    <p>
+                        Room Code: {currentRoomCode}
+                    </p>
+                    <button
+                        onClick={leaveRoom}
+                    >
+                        leave room
+                    </button>
+                </div>
+            )}
+            {!currentRoomCode && (
+                <>
+                    <div>
+                        <button
+                            onClick={createRoom}
+                        >
+                            create room
+                        </button>
+                    </div>
+                    <div>
+                        <label htmlFor="room-code-input">
+                            enter room code:
+                        </label>
+                        <input
+                            id='room-code-input'
+                            type="text"
+                            value={roomToJoin}
+                            onChange={handleChange}
+                        />
+                        <button
+                            onClick={handleJoinRoom}
+                        >
+                            join room
+                        </button>
+                    </div>
+                </>
+            )}
         </div>
 
     );

@@ -78,9 +78,6 @@ button {
 
     @media (min-aspect-ratio: 3/2) {
         font-size: 1.75vh;
-    }
-
-    @media (min-aspect-ratio: 2/1) {
         flex-direction: row;
     }
 }

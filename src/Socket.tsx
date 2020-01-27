@@ -16,21 +16,23 @@ type Board = {
 }[];
 
 interface SocketContextState {
-    joinRoom: (code: string) => void;
+    board: Board;
     createRoom: () => void;
+    joinRoom: (code: string) => void;
+    leaveRoom: () => void;
+    roomCode: string | null;
     startGame: () => void;
     time: number;
-    board: Board;
-    roomCode: string | null;
 }
 
 const SocketContext = React.createContext<SocketContextState>({
-    joinRoom: (code: string) => {},
+    board: [],
     createRoom: () => {},
+    joinRoom: (code: string) => {},
+    leaveRoom: () => {},
+    roomCode: null,
     startGame: () => {},
     time: 0,
-    board: [],
-    roomCode: null,
 });
 
 function SocketProvider({ children }) {
@@ -58,15 +60,20 @@ function SocketProvider({ children }) {
     }, [restart]);
 
     const joinRoom = useCallback((roomToJoin) => {
-        socket.emit('join-group', roomToJoin);
+        socket.emit('join-room', roomToJoin);
         setRoomCode(roomToJoin);
     }, [socket]);
 
     const createRoom = useCallback(() => {
-        socket.emit('create-group', (nextRoomCode) => {
+        socket.emit('create-room', (nextRoomCode) => {
             setRoomCode(nextRoomCode);
         });
     }, [socket]);
+
+    const leaveRoom = useCallback(() => {
+        socket.emit('leave-room', roomCode);
+        setRoomCode(null);
+    }, [roomCode, socket]);
 
     const startGame = useCallback(() => {
         const nextBoard = getNewLayout();
@@ -81,12 +88,13 @@ function SocketProvider({ children }) {
     return (
         <SocketContext.Provider
             value={{
-                joinRoom,
+                board,
                 createRoom,
+                joinRoom,
+                leaveRoom,
+                roomCode,
                 startGame,
                 time,
-                board,
-                roomCode,
             }}
         >
             {children}

@@ -14,11 +14,15 @@ app.get('*', (_, res) => {
 
 io.on('connection', (socket) => {
 
-    socket.on('join-group', (roomCode) => {
+    socket.on('join-room', (roomCode) => {
         socket.join(roomCode);
     });
 
-    socket.on('create-group', (respond) => {
+    socket.on('leave-room', (roomCode) => {
+        socket.leave(roomCode);
+    });
+
+    socket.on('create-room', (respond) => {
         const roomCode = shortid.generate();
         socket.join(roomCode);
         return respond(roomCode);
