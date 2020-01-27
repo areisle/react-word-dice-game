@@ -1,5 +1,5 @@
 {
-  "name": "react-boggle",
+  "name": "react-word-dice-game",
   "version": "0.1.0",
   "dependencies": {
     "@types/jest": "23.3.10",
@@ -7,6 +7,7 @@
     "@types/react": "16.7.18",
     "@types/react-dom": "16.0.11",
     "express": "^4.17.1",
+    "node-sass": "^4.13.1",
     "normalize.css": "^8.0.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",

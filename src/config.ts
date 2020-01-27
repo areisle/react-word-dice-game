@@ -28,4 +28,50 @@ const configurations = {
     ],
 }
 
-export { configurations };
+function getRandIndex(length: number) {
+    return Math.floor(Math.random() * Math.floor(length))
+}
+
+function getOrientation() {
+    const start = [0, 90, 180, 270][getRandIndex(4)];
+    const offset = getRandIndex(8) - 4;
+    return start + offset;
+}
+
+function getLetter(letters: string[]) {
+    return letters[getRandIndex(6)];
+}
+
+function shuffle<T = any>(array: T[]): T[] {
+    const copy = [...array];
+
+    let currentIndex = copy.length, temporaryValue, randomIndex;
+  
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+  
+      // Pick a remaining element...
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+  
+      // And swap it with the current element.
+      temporaryValue = copy[currentIndex];
+      copy[currentIndex] = copy[randomIndex];
+      copy[randomIndex] = temporaryValue;
+    }
+  
+    return copy;
+}
+
+function getNewLayout() {
+    return shuffle(configurations['en']).map((letters) => {
+        const letter = getLetter(letters);
+        const angle = getOrientation();
+        return { 
+            letter,
+            angle,
+        }
+    });
+}
+
+export { getNewLayout };

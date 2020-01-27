@@ -1,0 +1,86 @@
+:root {
+    --palette__bg: darkslategray;
+    --palette__border-white: rgb(218, 204, 204);
+    --palette__common-white: rgb(240, 233, 233);
+    --palette__primary--dark: rgb(37, 50, 126);
+    --palette__primary--main: rgb(58, 73, 158);
+    --palette__text--contrast: #ffffff;
+    --palette__text: #000000;
+}
+
+[data-theme="dark"] {
+    --palette__bg: rgb(0, 0, 0);
+    --palette__border-white: rgb(161, 150, 150);
+    --palette__common-white: #000000;
+    --palette__primary--dark: rgb(37, 50, 126);
+    --palette__primary--main: rgb(58, 73, 158);
+    --palette__text--contrast: #000000;
+    --palette__text: #ffffff;
+}
+
+html {
+    box-sizing: border-box;
+    font-size: 1.5rem;
+    height: 100vh;
+    width: 100vw;
+}
+
+body, html {
+    margin: 0px;
+    max-height: 100%;
+    max-width: 100%;
+    padding: 0px;
+}
+
+body, .App, #root {
+    height: 100%;
+    width: 100%;
+}
+
+*, *:after, *:before {
+    box-sizing: inherit;
+    font-family: 'Yantramanav'
+}
+
+button, input, p, label {
+    font-size: 1rem;
+}
+
+p, label {
+    margin: 5px;
+}
+
+button {
+    background: var(--palette__primary--main);
+    border: var(--palette__primary--dark) 5px solid;
+    border-radius: 5px;
+    color: var(--palette__text--contrast);
+}
+
+[data-theme="light"] .game {
+    background-image: linear-gradient(90deg, #551c07 50%, transparent 50%), linear-gradient(94deg, rgba(91,33,5,.1) 0%,rgba(83,29,4,0.32) 23%,rgba(74,24,3,.41) 47%,rgba(80,27,5,0.44) 70%,rgba(81,27,5,0.59) 74%,rgba(93,33,4,0.2) 83%,rgba(115,43,3,.5) 100%), linear-gradient(90deg, #541c09 50%, transparent 50%), linear-gradient(90deg, #7a2e00 50%, #632401 50%); 
+    background-size: 40px 160px, 60px 29px, 27px 27px;
+}
+
+.game {
+    align-items: center;
+    background: var(--palette__bg);
+    display: flex;
+    flex-direction: column;
+    font-size: 1.8vw;
+    height: 100%;
+    justify-content: center;
+    width: 100%;
+
+    @media (min-aspect-ratio: 1/1) {
+        font-size: 1.75vh;
+    }
+
+    @media (min-aspect-ratio: 3/2) {
+        font-size: 1.75vh;
+    }
+
+    @media (min-aspect-ratio: 2/1) {
+        flex-direction: row;
+    }
+}

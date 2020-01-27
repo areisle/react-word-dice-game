@@ -1,3 +1,5 @@
+import './Timer.scss';
+
 import React, { useState, useEffect, useCallback } from 'react';
 
 function Timer(props: any) {
@@ -15,7 +17,7 @@ function Timer(props: any) {
 
     return (
         <div className='timer'>
-            {minute}:{tenSec}{smallSec}
+            <p>{minute}:{tenSec}{smallSec}</p>
         </div>
     );
 }

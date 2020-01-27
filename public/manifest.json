@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Word Dice Game",
+  "name": "React Word Dice Game",
   "icons": [
     {
       "src": "favicon.ico",

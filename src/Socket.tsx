@@ -4,56 +4,11 @@ import React, {
     useState,
 } from 'react';
 import * as io from 'socket.io-client';
+
 import { useTimer } from './Timer';
-import { configurations } from './config';
+import { getNewLayout } from './config';
 
 const API = process.env.REACT_APP_API;
-
-function getRandIndex(length: number) {
-    return Math.floor(Math.random() * Math.floor(length))
-}
-
-function getOrientation() {
-    const start = [0, 90, 180, 270][getRandIndex(4)];
-    const offset = getRandIndex(8) - 4;
-    return start + offset;
-}
-
-function getLetter(letters: string[]) {
-    return letters[getRandIndex(6)];
-}
-
-function shuffle(array: any[]): any[] {
-    const copy = [...array];
-
-    let currentIndex = copy.length, temporaryValue, randomIndex;
-  
-    // While there remain elements to shuffle...
-    while (0 !== currentIndex) {
-  
-      // Pick a remaining element...
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex -= 1;
-  
-      // And swap it with the current element.
-      temporaryValue = copy[currentIndex];
-      copy[currentIndex] = copy[randomIndex];
-      copy[randomIndex] = temporaryValue;
-    }
-  
-    return copy;
-}
-
-function getLayout(config) {
-    return shuffle(config).map((letters) => {
-        const letter = getLetter(letters);
-        const angle = getOrientation();
-        return { 
-            letter,
-            angle,
-        }
-    });
-}
 
 type Board = {
     letter: string;
@@ -69,7 +24,7 @@ interface SocketContextState {
     roomCode: string | null;
 }
 
-export const SocketContext = React.createContext<SocketContextState>({
+const SocketContext = React.createContext<SocketContextState>({
     joinRoom: (code: string) => {},
     createRoom: () => {},
     startGame: () => {},
@@ -78,10 +33,10 @@ export const SocketContext = React.createContext<SocketContextState>({
     roomCode: null,
 });
 
-export function SocketProvider({ children }) {
+function SocketProvider({ children }) {
     const [socket, setSocket] = useState<any>(null);
     const [roomCode, setRoomCode] = useState<string | null>(null);
-    const [board, setBoard] = useState<Board>([]);
+    const [board, setBoard] = useState<Board>(getNewLayout());
 
     const {
         time,
@@ -114,14 +69,14 @@ export function SocketProvider({ children }) {
     }, [socket]);
 
     const startGame = useCallback(() => {
-        const nextBoard = getLayout(configurations['en']);
+        const nextBoard = getNewLayout();
         if (roomCode) {
             socket.emit('start-game', roomCode, nextBoard);
         } else {
             setBoard(nextBoard);
             restart();
         }
-    }, [socket, roomCode]);
+    }, [socket, roomCode, restart]);
 
     return (
         <SocketContext.Provider
@@ -137,4 +92,9 @@ export function SocketProvider({ children }) {
             {children}
         </SocketContext.Provider>
     )
+}
+
+export {
+    SocketContext,
+    SocketProvider,
 }

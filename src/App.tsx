@@ -1,6 +1,10 @@
+import './App.scss';
+
 import React, { useState } from 'react';
+
 import { Board } from './Board';
 import { SocketProvider } from './Socket';
+import { Controls } from './Controls';
 
 function App() {
 
@@ -13,17 +17,20 @@ function App() {
     return (
         <SocketProvider>
             <div className="App" data-theme={theme}>
-                <Board />
-                <button
-                    onClick={handleToggleTheme}
-                    style={{
-                        position: 'absolute',
-                        top: 0,
-                        right: 0,
-                    }}
-                >
-                    toggle theme
-                </button>
+                <div className='game'>
+                    <Board />
+                    <Controls />
+                    <button
+                        onClick={handleToggleTheme}
+                        style={{
+                            position: 'absolute',
+                            top: 0,
+                            right: 0,
+                        }}
+                    >
+                        toggle theme
+                    </button>
+                </div>
             </div>
         </SocketProvider>
     );
