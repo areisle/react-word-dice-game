@@ -37,60 +37,73 @@ const SocketContext = React.createContext<SocketContextState>({
 
 function SocketProvider({ children }) {
     const [socket, setSocket] = useState<any>(null);
-    const [roomCode, setRoomCode] = useState<string | null>(null);
+    const [roomCode, setRoomCode] = useState<string | null>((new URLSearchParams(window.location.search)).get('room'));
     const [board, setBoard] = useState<Board>(getNewLayout());
-
+    
     const {
         time,
         restart,
     } = useTimer(180);
 
+    const joinRoom = useCallback((roomToJoin: string | null) => {
+        if (roomToJoin) {
+            socket?.emit('join-room', roomToJoin);
+        }
+    }, [socket]);
+
     useEffect(() => {
         const nextSocket = io.connect(API);
         setSocket(nextSocket);
 
-        const handleGameStarted = (nextBoard) => {
+        const handleGameStarted = (nextBoard: Board) => {
             setBoard(nextBoard);
             restart();
         };
 
         nextSocket.on('start-game', handleGameStarted);
-
+        
         return () => nextSocket.disconnect();
     }, [restart]);
 
-    const joinRoom = useCallback((roomToJoin) => {
-        socket.emit('join-room', roomToJoin);
-        setRoomCode(roomToJoin);
-    }, [socket]);
-
     const createRoom = useCallback(() => {
-        socket.emit('create-room', (nextRoomCode) => {
+        socket?.emit('create-room', (nextRoomCode: string) => {
             setRoomCode(nextRoomCode);
+            (new URLSearchParams()).append('room', nextRoomCode);
         });
     }, [socket]);
 
+    const leaveServerRoom = useCallback((roomToLeave: string | null) => {
+        if (roomToLeave) {
+            socket?.emit('leave-room', roomToLeave);
+        }
+    }, [socket]);
+
     const leaveRoom = useCallback(() => {
-        socket.emit('leave-room', roomCode);
         setRoomCode(null);
-    }, [roomCode, socket]);
+        (new URLSearchParams()).delete('room');
+    }, []);
 
     const startGame = useCallback(() => {
         const nextBoard = getNewLayout();
         if (roomCode) {
-            socket.emit('start-game', roomCode, nextBoard);
+            socket?.emit('start-game', roomCode, nextBoard);
         } else {
             setBoard(nextBoard);
             restart();
         }
     }, [socket, roomCode, restart]);
 
+    useEffect(() => {
+        joinRoom(roomCode);
+        return () => leaveServerRoom(roomCode);
+    }, [joinRoom, leaveServerRoom, roomCode, socket]);
+
     return (
         <SocketContext.Provider
             value={{
                 board,
                 createRoom,
-                joinRoom,
+                joinRoom: setRoomCode,
                 leaveRoom,
                 roomCode,
                 startGame,
