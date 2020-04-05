@@ -35,4 +35,7 @@ io.on('connection', (socket) => {
 
 const port = process.env.PORT || 5000;
 
-http.listen(port);
+http.listen(
+    port, 
+    () => console.log(`game server listening at post:${port}`)
+);
