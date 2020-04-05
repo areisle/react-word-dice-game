@@ -46,14 +46,17 @@ function Users() {
         return (boardPosition.size * y) + boardPosition.top;
     }, [boardPosition]);
 
-    const users = Object.entries(userPositions).map(([userId, [x, y]], index) => (
-        <UserPointer
-            x={translateX(x)}
-            y={translateY(y)}
-            username={usernames[userId] || `user ${index + 1}`}
-            key={userId}
-        />
-    ))
+    const users = Object.entries(usernames).map(([userId, username], index) => {
+        const [x, y] = userPositions[userId] || [0, 0]
+        return (
+            <UserPointer
+                x={translateX(x)}
+                y={translateY(y)}
+                username={username || `user ${index + 1}`}
+                key={userId}
+            />
+        )
+    })
 
     return (
         <div 
