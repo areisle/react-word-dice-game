@@ -1,0 +1,17 @@
+.users-container {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    
+    &__pointer {
+        position: absolute;
+        display: inline-block;
+        background-color: #ffeb00;
+        border: 1px solid black;
+        padding: 2px 5px;
+        font-size: small;
+    }
+}

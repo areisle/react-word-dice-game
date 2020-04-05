@@ -12,24 +12,57 @@ app.get('*', (_, res) => {
     res.sendFile(filePath);
 });
 
-io.on('connection', (socket) => {
+const getUsersToUsernames = (roomCode) => {
+    const room = io.sockets.adapter.rooms[roomCode];
+    const roomUsers = {};
 
+    if (room && room.sockets) {
+        for (const clientId of Object.keys(room.sockets)) {
+            const {
+                userCode,
+                username,
+            } = io.sockets.connected[clientId];
+            roomUsers[userCode] = username || null;
+        }
+    }
+    return roomUsers;
+}
+
+io.on('connection', (socket) => {
     socket.on('join-room', (roomCode) => {
         socket.join(roomCode);
+        io.to(roomCode).emit('users-changed', getUsersToUsernames(roomCode));
     });
 
     socket.on('leave-room', (roomCode) => {
         socket.leave(roomCode);
+        io.to(roomCode).emit('users-changed', getUsersToUsernames(roomCode));
     });
 
     socket.on('create-room', (respond) => {
         const roomCode = shortid.generate();
-        socket.join(roomCode);
         return respond(roomCode);
+    });
+
+    socket.on('set-user-code', (userCode) => {
+        socket.userCode = userCode;
+    });
+
+    socket.on('update-username', (roomCode, username) => {
+        socket.username = username;
+        io.to(roomCode).emit('users-changed', getUsersToUsernames(roomCode));
     });
 
     socket.on('start-game', (roomCode, board) => {
         io.to(roomCode).emit('start-game', board);
+    });
+
+    socket.on('update-mouse-position', (roomCode, position) => {
+        io.to(roomCode).emit(
+            'mouse-position-updated',
+            socket.userCode,
+            position,
+        );
     });
 });
 
