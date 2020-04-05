@@ -68,7 +68,9 @@ function SocketProvider({ children }) {
     const createRoom = useCallback(() => {
         socket?.emit('create-room', (nextRoomCode: string) => {
             setRoomCode(nextRoomCode);
-            (new URLSearchParams()).append('room', nextRoomCode);
+            const params = new URLSearchParams(window.location.search);
+            params.append('room', nextRoomCode);
+            window.location.search = params.toString();
         });
     }, [socket]);
 
@@ -80,7 +82,9 @@ function SocketProvider({ children }) {
 
     const leaveRoom = useCallback(() => {
         setRoomCode(null);
-        (new URLSearchParams()).delete('room');
+        const params = new URLSearchParams(window.location.search);
+        params.delete('room');
+        window.location.search = params.toString();
     }, []);
 
     const startGame = useCallback(() => {
